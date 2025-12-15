@@ -148,7 +148,7 @@ in your `.env` and rerun `npm run automate`.
 
 ## 6. Automated Scheduling with PM2
 
-If you want this automation to run automatically at **08:30** and **11:30** IST, Monday through Friday, without touching system cron, use the bundled PM2 scheduler:
+If you want this automation to run automatically at **09:30** and **11:30** IST, Monday through Friday, without touching system cron, use the bundled PM2 scheduler:
 
 1. **Install dependencies (once)**
 	```bash
@@ -175,7 +175,7 @@ If you want this automation to run automatically at **08:30** and **11:30** IST,
 	pm2 logs scheduler
 	```
 
-> Timezone tip: the scheduler already targets `Asia/Kolkata`, so the jobs fire at 08:30/11:30 IST regardless of the VPS timezone. Setting the server timezone to IST is optional but can make log timestamps easier to reason about.
+> Timezone tip: the scheduler already targets `Asia/Kolkata`, so the jobs fire at 09:30/11:30 IST regardless of the VPS timezone. Setting the server timezone to IST is optional but can make log timestamps easier to reason about.
 
 To stop or restart the automation daemon:
 

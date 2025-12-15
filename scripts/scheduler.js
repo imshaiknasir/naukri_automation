@@ -87,14 +87,14 @@ async function runVideoCleanup() {
 const IST = 'Asia/Kolkata';
 
 // Schedule automation runs at 08:30 and 11:30 IST, Monday to Friday
-cron.schedule('0 30 8 * * 1-5', runAutomation, { timezone: IST });
+cron.schedule('0 30 9 * * 1-5', runAutomation, { timezone: IST });
 cron.schedule('0 30 11 * * 1-5', runAutomation, { timezone: IST });
 
 // Schedule weekly video cleanup at 2:00 AM IST every Monday
 cron.schedule('0 0 2 * * 1', runVideoCleanup, { timezone: IST });
 
 logger.info('Scheduler started successfully', {
-	automationSchedule: '08:30 and 11:30 IST, Monday-Friday',
+	automationSchedule: '09:30 and 11:30 IST, Monday-Friday',
 	cleanupSchedule: '02:00 IST, Every Monday',
 	timezone: IST,
 	videoRetentionDays: process.env.VIDEO_RETENTION_DAYS || '7',
