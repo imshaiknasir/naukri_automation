@@ -86,16 +86,25 @@ async function runVideoCleanup() {
 // Explicit timezone ensures triggers fire in IST even if server uses another tz
 const IST = 'Asia/Kolkata';
 
-// Schedule automation runs at 08:30 and 11:30 IST, Monday to Friday
-cron.schedule('0 30 9 * * 1-5', runAutomation, { timezone: IST });
-cron.schedule('0 30 11 * * 1-5', runAutomation, { timezone: IST });
+// Read schedules from environment variables (comma-separated cron expressions)
+const automationSchedules = (process.env.AUTOMATION_CRON_SCHEDULES || '0 15 9 * * 1-5')
+	.split(',')
+	.map((s) => s.trim())
+	.filter(Boolean);
 
-// Schedule weekly video cleanup at 2:00 AM IST every Monday
-cron.schedule('0 0 2 * * 1', runVideoCleanup, { timezone: IST });
+const cleanupSchedule = process.env.VIDEO_CLEANUP_CRON || '0 0 2 * * 1';
+
+// Schedule automation runs based on configured cron expressions
+for (const schedule of automationSchedules) {
+	cron.schedule(schedule, runAutomation, { timezone: IST });
+}
+
+// Schedule weekly video cleanup
+cron.schedule(cleanupSchedule, runVideoCleanup, { timezone: IST });
 
 logger.info('Scheduler started successfully', {
-	automationSchedule: '09:30 and 11:30 IST, Monday-Friday',
-	cleanupSchedule: '02:00 IST, Every Monday',
+	automationSchedules,
+	cleanupSchedule,
 	timezone: IST,
 	videoRetentionDays: process.env.VIDEO_RETENTION_DAYS || '7',
 	logRetentionDays: process.env.LOG_RETENTION_DAYS || '14',
